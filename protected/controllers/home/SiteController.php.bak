@@ -1,0 +1,267 @@
+<?php
+
+class SiteController extends HomeController
+{
+	/**
+	 * Declares class-based actions.
+	 */
+	public function actions()
+	{
+		return array(
+			// captcha action renders the CAPTCHA image displayed on the contact page
+			'captcha'=>array(
+				'class'=>'CCaptchaAction',
+				'backColor'=>0xFFFFFF,
+			),
+			// page action renders "static" pages stored under 'protected/views/site/pages'
+			// They can be accessed via: index.php?r=site/page&view=FileName
+			'page'=>array(
+				'class'=>'CViewAction',
+			),
+		);
+	}
+
+	/**
+	 * This is the default 'index' action that is invoked
+	 * when an action is not explicitly requested by users.
+	 */
+	public function actionIndex()
+	{
+		//Home page
+		// renders the view file 'protected/views/site/index.php'
+		// using the default layout 'protected/views/layouts/main.php'
+		$this->pageTitle = 'Sangche';
+		$lastest         = Patent::model()->findAll(array(
+				'condition' => 'status=1 AND home=1',
+				'order'     => 'date1 DESC, rank DESC',
+				'limit'     => 12,
+		));
+		$feature         = Patent::model()->findAll(array(
+				'condition' => 'status=1 AND feature=1',
+				'order'     => 'rank DESC',
+				'limit'     => 8,
+		));
+		$cdlast        = Volume::model()->findAll(array(
+				'condition' => 'status=1 AND home=1',
+				'order'     => 'date1 DESC',
+				'limit'     => 8,
+		)); 
+		$this->render('home', array(
+				'lastest' => $lastest,
+				'feature' => $feature,
+				'cdlast'  => $cdlast,
+		));
+	}
+
+	/**
+	 * This is the action to handle external exceptions.
+	 */
+	public function actionError()
+	{
+		if($error=Yii::app()->errorHandler->error)
+		{
+			if(Yii::app()->request->isAjaxRequest)
+				echo $error['message'];
+			else
+				$this->render('error', $error);
+		}
+	}
+
+	/**
+	 * Displays the contact page
+	 */
+	public function actionContact()
+	{
+		$model=new ContactForm;
+		if(isset($_POST['ContactForm']))
+		{
+			$model->attributes=$_POST['ContactForm'];
+			if($model->validate())
+			{
+				$name='=?UTF-8?B?'.base64_encode($model->name).'?=';
+				$subject='=?UTF-8?B?'.base64_encode($model->subject).'?=';
+				$headers="From: $name <{$model->email}>\r\n".
+					"Reply-To: {$model->email}\r\n".
+					"MIME-Version: 1.0\r\n".
+					"Content-Type: text/plain; charset=UTF-8";
+
+				mail(Yii::app()->params['adminEmail'],$subject,$model->body,$headers);
+				Yii::app()->user->setFlash('contact','Thank you for contacting us. We will respond to you as soon as possible.');
+				$this->refresh();
+			}
+		}
+		$this->render('contact',array('model'=>$model));
+	}
+
+	/**
+	 * Displays the login page
+	 */
+	public function actionList($id)
+	{
+		$category            = Category::model()->findByPk($id);
+		$this->pageTitle     = $category->name;
+		$criteria            = new CDbCriteria();
+		$criteria->condition = 'status=1 AND categoryId=' . $category->id;
+		$criteria->order     = 'rank DESC,id DESC';
+	
+		$count = Patent::model()->count($criteria);
+		$pages = new CPagination($count);
+		//results per page
+		$pages->pageSize = 16;
+		$pages->applyLimit($criteria);
+		$items = Patent::model()->findAll($criteria);
+	
+		$this->render('list', array(
+				'items'    => $items,
+				'pages'    => $pages,
+				'category' => $category,
+
+		));
+	}
+	
+	public function actionPage()
+	{
+		if (empty($_GET['view']))
+			$this->actionIndex();
+		$model = Page::model()->findByUrl($_GET['view']);
+		// if page is not found, then run a controller with that name
+		if ($model === NULL)
+			throw new CHttpException(400, 'Khong tim thay trang');
+		else {
+			$this->pageTitle = $model->title;
+			$this->render('page', array('model' => $model));
+		}
+	}
+	
+	public function actionDetail($id)
+	{
+		$model               = Patent::model()->findByPk($id);
+		$this->pageTitle     = $model->title;
+		$criteria            = new CDbCriteria();
+		$criteria->condition = 'status=1 AND categoryId=' . $model->categoryId . ' AND  id>' . $model->id;
+		//$criteria->limit     = 8;
+		$criteria->order     = 'id DESC';
+		$items               = Patent::model()->findAll($criteria);
+		//$info                = Page::model()->findByUrl('thongtinchitiet');
+		$info                = $model->abstract;
+		$this->render('detail', array(
+				'items' => $items,
+				'model' => $model,
+				'info'  => $info,
+		));
+	}
+	
+	public function actionDetailCD($id)
+	{
+		$model               = Volume::model()->findByPk($id);
+		$this->pageTitle     = $model->name;
+		$criteria            = new CDbCriteria();
+		$criteria->condition = 'status=1 AND id>' . $model->id;
+		//$criteria->limit     = 8;
+		$criteria->order     = 'id DESC';
+		$items               = Volume::model()->findAll($criteria);
+		//$info                = Page::model()->findByUrl('thongtinchitiet');
+		$time                = $model->time;
+		$info                = $model->info;
+		$this->render('detailCD', array(
+				'items' => $items,
+				'model' => $model,
+				'info'  => $info,
+				'time'  => $time,
+		));
+	}
+
+
+    public function actionDetailType($id)
+    {
+        $model               = Type::model()->findByPk($id);
+        $this->pageTitle     = $model->name;
+        $criteria            = new CDbCriteria();
+        $criteria->condition = 'voltypeId='.$model->id;
+        $criteria->limit     = 8;
+        $criteria->order     = 'id DESC';
+        $items               = Volume::model()->findAll($criteria);
+        $this->render('detailType', array(
+            'items' => $items,
+            'model' => $model,
+        ));
+    }
+
+
+	public function actionDetailPt($id)
+	{
+	
+        $model               = Volume::model()->findByPk($id);
+		$this->pageTitle     = $model->name;
+      //  $model               = Patent::model()->findByPk($id);
+		$criteria            = new CDbCriteria();
+		$criteria->condition = ' volumeId=' . $model->id;
+		$criteria->limit     = 8;
+		$criteria->order     = 'id DESC';
+
+        $count = Patent::model()->count($criteria);
+        $pages = new CPagination($count);
+        //results per page
+        $pages->pageSize = 16;
+        $pages->applyLimit($criteria);
+		$items               = Patent::model()->findAll($criteria);
+		//$time                = $model->time;
+		//$info                = $model->info;	
+		$this->render('detailPt',array(
+			'model'=>$model,
+            'items'=>$items,
+            'pages'=> $pages,
+            'count'=>$count,
+		));
+		
+	}
+	
+	public function actionSearch()
+	{
+		$key             = isset($_REQUEST['v']) ? $_REQUEST['v'] : '';
+		$this->pageTitle = 'Tim kiem: ' . $key;
+		if (!empty($key)) {
+			$criteria            = new CDbCriteria();
+            $criteria->condition = 'title like "%' . $key . '%"';
+            $criteria->order = 'id DESC';
+	
+			$count = Patent::model()->count($criteria);
+			$pages = new CPagination($count);
+			//results per page
+			$pages->pageSize = 16;
+			$pages->applyLimit($criteria);
+			$items = Patent::model()->findAll($criteria);
+	
+			$this->render('search', array(
+					'items'    => $items,
+					'pages'    => $pages,
+			));
+		} else {
+			throw new CHttpException(400, 'Ban phai nhap tu khoa tim kiem');
+		} 
+	}
+
+	public function actionCD()
+	{
+	
+		$this->pageTitle = 'Danh mục Volume';	
+		$criteria            = new CDbCriteria();
+		$items = Type::model()->findAll($criteria);
+		$criteria->limit     = 8;
+		$this->render('CD', array(
+				'items'    => $items,
+		));
+	}
+	
+	
+	
+	/**
+	 * Logs out the current user and redirect to homepage.
+	 */
+	public function actionLogout()
+	{
+		Yii::app()->user->logout();
+		$this->redirect(Yii::app()->homeUrl);
+	}
+	//-----------------
+}

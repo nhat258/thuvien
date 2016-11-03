@@ -1,0 +1,155 @@
+<?php
+/* @var $this PatentController */
+/* @var $model Patent */
+/* @var $form CActiveForm */
+?>
+
+<div class="wide form">
+
+    <?php $form = $this->beginWidget('CActiveForm', array(
+    'id'                   => 'patent-form',
+    'enableAjaxValidation' => FALSE,
+    'htmlOptions'          => array(
+        'enctype' => 'multipart/form-data',
+    ),
+)); ?>
+
+	<p class="note">Fields with <span class="required">*</span> are required.</p>
+
+	<?php echo $form->errorSummary($model); ?>
+
+	<!--  <div class="row">
+		<?php //echo $form->labelEx($model,'id'); ?>
+		<?php //echo $form->textField($model,'id'); ?>
+		<?php //echo $form->error($model,'id'); ?>
+	</div> -->
+    <div class="row">
+        <?php echo $form->labelEx($model,'categoryId'); ?>
+        <?php echo $form->dropDownList($model, 'categoryId', CHtml::listData(Category::model()->findAll(), 'id', 'name'), array('empty' => '(Chọn Quốc gia)')); ?>
+        <?php echo $form->error($model,'categoryId'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model,'volumeId'); ?>
+        <?php echo $form->dropDownList($model, 'volumeId', CHtml::listData(Volume::model()->findAll(), 'id', 'name'), array('empty' => '(Chọn Kí hiệu đĩa )')); ?>
+        <?php echo $form->error($model,'volumeId'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->label($model,'examdate'); ?>
+        <?php echo $form->textField($model,'examdate',array('size'=>50,'maxlength'=>50)); ?>
+        <?php // echo $form->error($model,'examdate'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->label($model,'appno'); ?>
+        <?php echo $form->textField($model,'appno',array('size'=>50,'maxlength'=>50)); ?>
+        <?php // echo $form->error($model,'appno'); ?>
+    </div>
+    <div class="row">
+        <?php echo $form->labelEx($model,'ipc'); ?>
+        <?php echo $form->textField($model,'ipc',array('size'=>60,'maxlength'=>250)); ?>
+        <?php echo $form->error($model,'ipc'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->label($model,'puba'); ?>
+        <?php echo $form->textField($model,'puba',array('size'=>60,'maxlength'=>75)); ?>
+        <?php // echo $form->error($model,'puba'); ?>
+    </div>
+    <div class="row">
+        <?php echo $form->label($model,'pubno'); ?>
+        <?php echo $form->textField($model,'pubno',array('size'=>50,'maxlength'=>50)); ?>
+        <?php // echo $form->error($model,'pubno'); ?>
+    </div>
+    <div class="row">
+        <?php echo $form->labelEx($model,'fillingdate'); ?>
+        <?php echo $form->textField($model,'fillingdate',array('size'=>50,'maxlength'=>50)); ?>
+        <?php echo $form->error($model,'fillingdate'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model,'phanloai'); ?>
+        <?php echo $form->textArea($model,'phanloai',array('rows'=>6, 'cols'=>50)); ?>
+        <?php echo $form->error($model,'phanloai'); ?>
+    </div>
+    <div class="row">
+    <div class="row">
+        <?php echo $form->labelEx($model,'author'); ?>
+        <?php echo $form->textArea($model,'author',array('rows'=>6, 'cols'=>50)); ?>
+        <?php echo $form->error($model,'author'); ?>
+    </div>
+    <div class="row">
+        <?php echo $form->labelEx($model,'applicant'); ?>
+        <?php echo $form->textArea($model,'applicant',array('rows'=>6, 'cols'=>50)); ?>
+        <?php echo $form->error($model,'applicant'); ?>
+    </div>
+    <div class="row">
+        <?php echo $form->labelEx($model,'chidinh'); ?>
+        <?php echo $form->textArea($model,'chidinh',array('rows'=>4, 'cols'=>50)); ?>
+        <?php // echo $form->error($model,'chidinh'); ?>
+    </div>
+    <div class="row">
+        <?php echo $form->labelEx($model,'data'); ?>
+        <?php echo $form->textArea($model,'data',array('rows'=>10, 'cols'=>70)); ?>
+        <?php //echo $form->error($model,'data'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model,'title'); ?>
+        <?php echo $form->textArea($model,'title',array('rows'=>6, 'cols'=>50)); ?>
+        <?php echo $form->error($model,'title'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model,'abstract'); ?>
+        <?php echo $form->textArea($model,'abstract',array('rows'=>6, 'cols'=>50)); ?>
+        <?php echo $form->error($model,'abstract'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->label($model,'appname'); ?>
+        <?php echo $form->textField($model,'appname',array('size'=>60,'maxlength'=>250)); ?>
+        <?php // echo $form->error($model,'appname'); ?>
+    </div>
+    <div class="row">
+        <?php echo $form->label($model,'inventor'); ?>
+        <?php echo $form->textField($model,'inventor',array('size'=>60,'maxlength'=>250)); ?>
+        <?php // echo $form->error($model,'inventor'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model, 'status'); ?>
+        <?php echo $form->checkBox($model, 'status'); ?>
+        <?php echo $form->error($model, 'status'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model, 'home'); ?>
+        <?php echo $form->checkBox($model, 'home'); ?>
+        <?php echo $form->error($model, 'home'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model, 'feature'); ?>
+        <?php echo $form->checkBox($model, 'feature'); ?>
+        <?php echo $form->error($model, 'feature'); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model, 'rank'); ?>
+        <?php echo $form->textField($model, 'rank'); ?>
+        <?php echo $form->error($model, 'rank'); ?>
+    </div>
+        <!-- <div class="row">
+            <?php echo $form->labelEx($model,'date1'); ?>
+            <?php echo $form->textField($model,'date1',array('size'=>60,'maxlength'=>500)); ?>
+            <?php echo $form->error($model,'date1'); ?>
+        </div> -->
+    <div class="row buttons">
+        <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+    </div>
+
+    <?php $this->endWidget(); ?>
+
+</div><!-- form -->

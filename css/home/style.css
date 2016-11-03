@@ -1,0 +1,106 @@
+@CHARSET "ISO-8859-1";
+.divTable
+{
+    display:  table;
+    width: 740px;
+    background-color:#eee;
+
+
+
+}
+.divRow
+{
+    display:table;
+    width:750px;
+    border: 1px solid #666666;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+}
+.divCell
+{
+    float:left;/*fix for  buggy browsers*/
+    display:table-cell;
+    font-family:Time New Romance;
+    width: 400px;
+    font-size:12pt;
+    padding-left: 10px;
+    padding-right: 5px;
+}
+
+.divCell0
+{
+    float:left;/*fix for  buggy browsers*/
+    display:table-cell;
+    font-family:Time New Romance;
+    border-right: 1px solid #666666;
+    width: 50px;
+    font-weight: bold;
+    font-size:12pt;
+    padding-left: 25px;
+    padding-right: 5px;
+    align-content: center;
+}
+.divCell1
+{
+    float:left;/*fix for  buggy browsers*/
+    display:table-column;
+    width:290px;
+    font-family:Time New Romance;
+    font-size:12pt;
+    padding-left: 5px;
+  }
+.divCell3
+{
+    float:right;/*fix for  buggy browsers*/
+    display:table-cell;
+    width:400px;
+    font-family:Time New Romance;
+    font-size:12pt;
+    border-left: 1px solid #666666;
+    align-content: center;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.divCell4
+{
+    float:left;/*fix for  buggy browsers*/
+    display:table-column;
+    width:450px;
+    font-family:Time New Romance;
+    font-size:12pt;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.divCell5
+{
+    float:right;/*fix for  buggy browsers*/
+    display:table-cell;
+    width:280px;
+    font-family:Time New Romance;
+    font-size:12pt;
+    border-left: 1px solid #666666;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.divCell6
+{
+    float:right;/*fix for  buggy browsers*/
+    display:table-column;
+    width:740px;
+    font-family:Time New Romance;
+    font-size:12pt;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-weight: bold;
+}
+.divCell7
+{
+    float:right;/*fix for  buggy browsers*/
+    display:table-column;
+    width:740px;
+    font-family:Time New Romance;
+    font-size:12pt;
+    padding-left: 5px;
+    padding-right: 5px;
+}
