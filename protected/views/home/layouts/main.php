@@ -159,7 +159,7 @@
             <br/>
             <br/>
 
-            <div class="fb-like-box" data-href="http://facebook.com/techmartdanang.vn" data-width="184" data-show-faces="true"
+            <div class="fb-like-box" data-href="https://www.facebook.com/techmartdn/?fref=ts" data-width="184" data-show-faces="true"
                  data-stream="false" data-header="true"></div>
             <br/>
             <br/>
